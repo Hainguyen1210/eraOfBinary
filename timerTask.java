@@ -8,19 +8,24 @@ package eraofbinary;
 import javafx.concurrent.Task;
 
 /**
- *
+ * this class is extended from Task,
+ * purpose: create an upđatable timer to binded with ProgressIndicator
+ *          timer can swap between 2 specific periods of time 
  * @author haing
  */
 public class timerTask extends Task<Void> {
   private int currentSeconds, second1, second2, chosenSecond = 1;
+  private final boolean is2PhasesMode;
   
   public timerTask(int seconds){
-    this.currentSeconds = seconds;
+    this.chosenSecond = seconds;
+    this.is2PhasesMode = false;
   }
   public timerTask(int second1, int second2){
     this.second1 = second1;
     this.second2 = second2;
     this.chosenSecond = second2;
+    is2PhasesMode = true;
   }
   
   private void swapSeconds(){
@@ -30,12 +35,18 @@ public class timerTask extends Task<Void> {
       chosenSecond = second1;
     }
   }
-  
+  private void swapMode(){
+    //swap between SENDING mode and DECODING mode
+    FXMLDocumentController.isSendingPhase = chosenSecond == second1;
+  }
   @Override
   protected Void call()throws Exception{
-    System.out.print("timerTask ");
-    
-    swapSeconds();
+    if(is2PhasesMode){
+    //swap between 2 periods of time so timer counts different each turn
+      swapSeconds();
+    //swap between 2 modes depending on the current chosen time
+      swapMode();
+    }
     
     currentSeconds = chosenSecond;
     
@@ -45,6 +56,7 @@ public class timerTask extends Task<Void> {
     long temp = startTime + 1000;
     
     System.out.println(currentSeconds);
+    System.out.println(FXMLDocumentController.isSendingPhase);
     
     while (runningTime < endTime ) {
       if ( runningTime == temp ) {

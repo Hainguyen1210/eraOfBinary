@@ -20,33 +20,38 @@ import javafx.scene.control.ProgressIndicator;
  * @author haing
  */
 public class FXMLDocumentController implements Initializable {
+  private timerTask counter;
+  public static boolean isSendingPhase;
   
   @FXML private AnchorPane mainPane;
   @FXML private Label player1KeyLabel, player2KeyLabel, player3KeyLabel;
   @FXML private Button startButton;
   @FXML private ProgressIndicator progressIndicator;
-//  private static ProgressIndicator progressIndicator1;
+  
   
   @Override  public void initialize(URL url, ResourceBundle rb) {
-//    progressIndicator1 = progressIndicator;
   }
   
   @FXML private void updateProgress() throws InterruptedException{
+    //Create timer, bind it with the Progress Indiicator
+    //  Timer can be created with a pair of specific periods of time, 
+    //    then it will be swapped turn by turn
     
       try {//try to create timerTask
-        timerTask sendingCounter = new timerTask(1, 3);
+        counter = new timerTask(2, 4);
         try {//try to bind UI with counter task
-          progressIndicator.progressProperty().bind(sendingCounter.progressProperty());
-          System.out.println("binded with sendingCounter");
+          progressIndicator.progressProperty().bind(counter.progressProperty());
+          System.out.println("binded with Counter");
           } catch (Exception e) {
             System.err.println("cannot bind");
           }
-        Thread sendingThread = new Thread(sendingCounter);
-        sendingThread.setDaemon(true);
-        sendingThread.start();
-        System.out.println("thread2 started");
+        Thread counterThread = new Thread(counter);
+        counterThread.setDaemon(true);
+        counterThread.start();
+        System.out.println("counterThread started");
       } catch (Exception e) {
         System.err.println("can not create timer task");
       }
   }
+  
 }

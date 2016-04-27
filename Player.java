@@ -5,6 +5,7 @@
  */
 package eraofbinary;
 
+import java.util.ArrayList;
 import javafx.scene.input.KeyCode;
 
 /**
@@ -12,7 +13,7 @@ import javafx.scene.input.KeyCode;
  * @author haing
  */
 public class Player {
-  public static Player[] players;
+  public static ArrayList<Player> players = new ArrayList<>();
   public String 
           key="",
           name;

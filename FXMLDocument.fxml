@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
@@ -11,6 +12,7 @@
 
 <AnchorPane id="AnchorPane" fx:id="mainPane" prefHeight="480.0" prefWidth="651.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eraofbinary.FXMLDocumentController">
     <children>
+      <ProgressIndicator fx:id="progressIndicator" layoutY="5.0" onMousePressed="#updateProgress" prefHeight="473.0" prefWidth="651.0" progress="0.0" />
       <ImageView fitHeight="44.0" fitWidth="43.0" layoutX="133.0" layoutY="123.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@bin/PC.png" />
@@ -41,10 +43,31 @@
             <Image url="@bin/PC.png" />
          </image>
       </ImageView>
-      <ProgressIndicator fx:id="progressIndicator" layoutX="269.0" layoutY="131.0" onMousePressed="#updateProgress" prefHeight="110.0" prefWidth="116.0" progress="0.0" />
-        <Button fx:id="startButton" layoutX="224.0" layoutY="201.0" onAction="#updateProgress" prefHeight="79.0" prefWidth="204.0" text="Start" visible="false">
+      <Label fx:id="player1NameLabel" alignment="CENTER_RIGHT" layoutX="23.0" layoutY="132.0" prefHeight="25.0" prefWidth="90.0" text="Label" />
+      <Label fx:id="player2NameLabel" layoutX="539.0" layoutY="132.0" prefHeight="25.0" prefWidth="90.0" text="Label" />
+      <Label fx:id="player3NameLabel" alignment="CENTER" layoutX="281.0" layoutY="340.0" prefHeight="25.0" prefWidth="90.0" text="Label" />
+      <AnchorPane fx:id="instructionPane" layoutX="64.0" layoutY="93.0" prefHeight="319.0" prefWidth="526.0">
+         <children>
+              <Button fx:id="startButton" layoutX="177.0" layoutY="38.0" onAction="#onStartButton" prefHeight="110.0" prefWidth="172.0" text="Start">
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font>
+            </Button>
+            <TextField fx:id="player1NameField" alignment="CENTER" layoutY="81.0" prefHeight="25.0" prefWidth="172.0" promptText="Player's name" />
+            <TextField fx:id="player2NameField" alignment="CENTER" layoutX="354.0" layoutY="81.0" prefHeight="25.0" prefWidth="172.0" promptText="Player's name" />
+            <TextField fx:id="player3NameField" alignment="CENTER" layoutX="177.0" layoutY="245.0" prefHeight="25.0" prefWidth="172.0" promptText="Player's name" />
+            <Button layoutY="114.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Z" />
+            <Button layoutX="97.0" layoutY="114.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="X" />
+            <Button layoutX="354.0" layoutY="114.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="N" />
+            <Button layoutX="451.0" layoutY="114.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="M" />
+            <Button layoutX="274.0" layoutY="278.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="NUM 2" />
+            <Button layoutX="177.0" layoutY="278.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="NUM 1" />
+         </children>
+      </AnchorPane>
+      <Button fx:id="backButton" layoutX="12.0" layoutY="14.0" mnemonicParsing="false" onAction="#onBackButton" prefHeight="31.0" prefWidth="52.0" text="&lt;&lt;&lt;" visible="false">
          <font>
-            <Font name="System Bold" size="36.0" />
-         </font></Button>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Button>
     </children>
 </AnchorPane>

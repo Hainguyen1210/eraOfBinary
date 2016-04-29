@@ -12,40 +12,60 @@
 
 <AnchorPane id="AnchorPane" fx:id="mainPane" prefHeight="480.0" prefWidth="651.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eraofbinary.FXMLDocumentController">
     <children>
-      <ProgressIndicator fx:id="progressIndicator" layoutY="5.0" onMousePressed="#updateProgress" prefHeight="473.0" prefWidth="651.0" progress="0.0" />
-      <ImageView fitHeight="44.0" fitWidth="43.0" layoutX="133.0" layoutY="123.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@bin/PC.png" />
-         </image>
-      </ImageView>
-      <Label fx:id="player1KeyLabel" alignment="CENTER" layoutX="68.0" layoutY="93.0" prefHeight="30.0" prefWidth="172.0" text="0101010101101010101010">
+      <ProgressIndicator fx:id="progressIndicator" layoutY="5.0" onMousePressed="#updateProgress" prefHeight="473.0" prefWidth="651.0" progress="0.0" visible="false" />
+      <Button fx:id="backButton" layoutX="12.0" layoutY="14.0" mnemonicParsing="false" onAction="#onBackButton" prefHeight="31.0" prefWidth="52.0" text="&lt;&lt;&lt;" visible="false">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Button>
+      <Label fx:id="player1PointLabel" alignment="CENTER" layoutX="133.0" layoutY="123.0" prefHeight="44.0" prefWidth="42.0" text="0" textFill="#3e3eda">
+         <font>
+            <Font name="System Bold" size="27.0" />
+         </font>
+      </Label>
+      <Label fx:id="player1ReceivedLabel" alignment="CENTER" layoutX="68.0" layoutY="78.0" prefHeight="30.0" prefWidth="172.0" text="1st Player's received key" textFill="#059700">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <ImageView fitHeight="44.0" fitWidth="43.0" layoutX="305.0" layoutY="287.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@bin/PC.png" />
-         </image>
-      </ImageView>
-      <Label fx:id="player3KeyLabel" alignment="CENTER" layoutX="240.0" layoutY="257.0" prefHeight="30.0" prefWidth="172.0" text="0101010101101010101010">
+      <Label fx:id="player1KeyLabel" alignment="CENTER" layoutX="68.0" layoutY="93.0" prefHeight="30.0" prefWidth="172.0" text="1st Player's key">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="player2KeyLabel" alignment="CENTER" layoutX="412.0" layoutY="93.0" prefHeight="30.0" prefWidth="172.0" text="0101010101101010101010">
+      <Label fx:id="player1NameLabel" alignment="CENTER_RIGHT" layoutX="23.0" layoutY="132.0" prefHeight="25.0" prefWidth="90.0" text="1st Player's name" />
+      <Label fx:id="player2PointLabel" alignment="CENTER" layoutX="477.0" layoutY="123.0" prefHeight="44.0" prefWidth="42.0" text="0" textFill="#e1e10b">
+         <font>
+            <Font name="System Bold" size="27.0" />
+         </font>
+      </Label>
+      <Label fx:id="player2ReceivedLabel" alignment="CENTER" layoutX="412.0" layoutY="78.0" prefHeight="30.0" prefWidth="172.0" text="2nd Player's received key" textFill="#059700">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <ImageView fitHeight="44.0" fitWidth="43.0" layoutX="477.0" layoutY="123.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@bin/PC.png" />
-         </image>
-      </ImageView>
-      <Label fx:id="player1NameLabel" alignment="CENTER_RIGHT" layoutX="23.0" layoutY="132.0" prefHeight="25.0" prefWidth="90.0" text="Label" />
-      <Label fx:id="player2NameLabel" layoutX="539.0" layoutY="132.0" prefHeight="25.0" prefWidth="90.0" text="Label" />
-      <Label fx:id="player3NameLabel" alignment="CENTER" layoutX="281.0" layoutY="340.0" prefHeight="25.0" prefWidth="90.0" text="Label" />
+      <Label fx:id="player2KeyLabel" alignment="CENTER" layoutX="412.0" layoutY="93.0" prefHeight="30.0" prefWidth="172.0" text="2nd Player's key">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="player2NameLabel" layoutX="539.0" layoutY="132.0" prefHeight="25.0" prefWidth="90.0" text="2nd Player's name" />
+      <Label fx:id="player3PointLabel" alignment="CENTER" layoutX="306.0" layoutY="287.0" prefHeight="44.0" prefWidth="42.0" text="0" textFill="#ff0c0c">
+         <font>
+            <Font name="System Bold" size="27.0" />
+         </font>
+      </Label>
+      <Label fx:id="player3ReceivedLabel" alignment="CENTER" layoutX="240.0" layoutY="242.0" prefHeight="30.0" prefWidth="172.0" text="3rd Player's received key" textFill="#059700">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="player3KeyLabel" alignment="CENTER" layoutX="240.0" layoutY="257.0" prefHeight="30.0" prefWidth="172.0" text="3rd Player's key">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="player3NameLabel" alignment="CENTER" layoutX="281.0" layoutY="340.0" prefHeight="25.0" prefWidth="90.0" text="3rd Player's name" />
       <AnchorPane fx:id="instructionPane" layoutX="64.0" layoutY="93.0" prefHeight="319.0" prefWidth="526.0">
          <children>
               <Button fx:id="startButton" layoutX="177.0" layoutY="38.0" onAction="#onStartButton" prefHeight="110.0" prefWidth="172.0" text="Start">
@@ -64,10 +84,5 @@
             <Button layoutX="177.0" layoutY="278.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="NUM 1" />
          </children>
       </AnchorPane>
-      <Button fx:id="backButton" layoutX="12.0" layoutY="14.0" mnemonicParsing="false" onAction="#onBackButton" prefHeight="31.0" prefWidth="52.0" text="&lt;&lt;&lt;" visible="false">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </Button>
     </children>
 </AnchorPane>

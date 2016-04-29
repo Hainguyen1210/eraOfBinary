@@ -39,8 +39,21 @@ public class timerTask extends Task<Void> {
     //swap between SENDING mode and DECODING mode
     FXMLDocumentController.isSendingPhase = chosenSecond == second1;
   }
+  
   @Override
   protected Void call()throws Exception{
+    System.out.println("Task Started");
+    
+    if(FXMLDocumentController.isSendingPhase) {
+      Player.routeData();
+      Player.clearPlayerKeys();
+    } else{
+      Player.countPoint();
+      Player.clearPlayerReceived();
+      Player.clearPlayerKeys();
+    }
+    Player.updateUI();
+    
     if(is2PhasesMode){
     //swap between 2 periods of time so timer counts different each turn
       swapSeconds();
@@ -55,32 +68,35 @@ public class timerTask extends Task<Void> {
     long runningTime = startTime, totalTime = endTime - startTime;
     long temp = startTime + 1000;
     
-    System.out.println(currentSeconds);
-    System.out.println(FXMLDocumentController.isSendingPhase);
+    System.out.println("isSendingPhase? " + FXMLDocumentController.isSendingPhase);
+    System.out.print(currentSeconds + " ");
     
-    while (runningTime < endTime ) {
+    //count each second
+    while (runningTime < endTime ) { 
       if ( runningTime == temp ) {
         currentSeconds--;
         temp += 1000;
-      System.out.println(currentSeconds);
+      System.out.print(currentSeconds + " ");
       }
       updateProgress(runningTime-startTime, totalTime);
       runningTime = System.currentTimeMillis();
     }
     System.out.print("end while loop ");
+    
+    //repeat the counter
     if (runningTime>=endTime) {
       System.out.println("run again");
+      System.out.println("---------------------------------");
       call();
     }
-
     return null;
   }
   @Override
   protected void failed(){
-    System.out.println("failed");
+    System.out.println("Task failed");
   }
   @Override
   protected void succeeded(){
-    System.out.println("finished");
+    System.out.println("Task finished");
   }
 }

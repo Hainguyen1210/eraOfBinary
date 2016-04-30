@@ -5,6 +5,9 @@
  */
 package eraofbinary;
 
+import static eraofbinary.FXMLDocumentController.colorIndex;
+import static eraofbinary.FXMLDocumentController.colors;
+import static eraofbinary.FXMLDocumentController.indicatorColor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javafx.application.Platform;
@@ -82,6 +85,8 @@ public class Player {
     this.keyProperty.set(this.key);
     this.receivedProperty.set(this.received);
     this.pointProperty.set(Integer.toString(this.currentPoint));
+//    indicatorColor.set(colors[colorIndex]);
+//    FXMLDocumentController.indicatorColor.set(FXMLDocumentController.colors[FXMLDocumentController.colorIndex]);
   }
   public static void clearPlayerKeys(){
     //clear all player's keys 
@@ -125,7 +130,7 @@ public class Player {
         }
         bitsAvailable += checkingPlayer.received.length();
       }
-      if(bitsAvailable > 1) { Sound.power.play(); }
+      if(bitsAvailable > 0) { Sound.power.play(); }
       
     } catch (Exception e) {
       System.err.println("route failed");

@@ -73,7 +73,7 @@ public class timerTask extends Task<Void> {
     }
     System.out.print("end while loop ");
     
-    //
+    //rout packages and count points
       if(FXMLDocumentController.isSendingPhase) {
       Player.routeData();
       Player.clearPlayerKeys();
@@ -82,6 +82,9 @@ public class timerTask extends Task<Void> {
       Player.clearPlayerReceived();
       Player.clearPlayerKeys();
     }
+      System.out.println("changing color");
+      FXMLDocumentController.swapIndicatorColor();
+      System.out.println("color changed");
     Player.updateUI();
     
     //repeat the counter
@@ -92,6 +95,7 @@ public class timerTask extends Task<Void> {
       if(!Player.hasWinner()) {
         call();      
       } else {
+        Sound.thuglife.play();
         System.out.println("loading");
         Statistics.loadUserData();
         System.out.println("finished");
@@ -100,6 +104,7 @@ public class timerTask extends Task<Void> {
         System.out.print("saving");
         Statistics.saveUserData();
         System.out.println(" finished");
+        
       }
     }
     return null;

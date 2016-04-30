@@ -11,12 +11,13 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.ProgressIndicator;
@@ -43,10 +44,12 @@ public class FXMLDocumentController implements Initializable {
           winningPointLabel;
   @FXML private TextField player1NameField, player2NameField, player3NameField;
   @FXML private TextField winningPointField;
-  @FXML private Button startButton, backButton;
   @FXML public ProgressIndicator progressIndicator;
   public static Label a, b, c, sent1, sent2, sent3, point1, point2, point3;
   public static int winningPoint;
+  public static String[] colors = {"-fx-progress-color: yellow;", "-fx-progress-color: blue;" };
+  public static int colorIndex = 0;
+  public static StringProperty indicatorColor = new SimpleStringProperty("-fx-progress-color: yellow;");
   
   @Override  public void initialize(URL url, ResourceBundle rb) {
     isThreadRunning = false;  isGameStarted = false;
@@ -54,6 +57,21 @@ public class FXMLDocumentController implements Initializable {
     a = player1KeyLabel; sent1 = player1ReceivedLabel; point1 = player1PointLabel;
     b = player2KeyLabel; sent2 = player2ReceivedLabel; point2 = player2PointLabel;
     c = player3KeyLabel; sent3 = player3ReceivedLabel; point3 = player3PointLabel;
+  }
+  public static void swapIndicatorColor(){
+    if(colorIndex == 0 ) {  colorIndex = 1;    }
+    else {  colorIndex = 0; }
+    
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run(){
+        try {
+          indicatorColor.set(colors[colorIndex]);
+        }catch(Exception e){
+          System.out.println("can't change color");
+        }
+      }
+    });
   }
   private void resetGame() throws IOException{
     if(isThreadRunning) {
@@ -70,7 +88,21 @@ public class FXMLDocumentController implements Initializable {
     currentStage.setScene(scene);
     currentStage.show();
   }
-  
+  public void winnerScene() throws IOException{
+    if(isThreadRunning) {
+    counter.cancel(false);
+    currentThread.stop();
+    counter = null;
+    currentThread = null;
+    Player.players.clear();
+    }
+    
+    Parent root = FXMLLoader.load(getClass().getResource("GameOver.fxml"));
+    Stage currentStage = (Stage) mainPane.getScene().getWindow();
+    Scene scene = new Scene(root);
+    currentStage.setScene(scene);
+    currentStage.show();
+  }
   @FXML private void onStartButton(){
     //get winning points
     getWinningPoint();
@@ -151,6 +183,7 @@ public class FXMLDocumentController implements Initializable {
         counter = new timerTask(2, 4);
         try {//try to bind UI with counter task  
           progressIndicator.progressProperty().bind(counter.progressProperty());
+          progressIndicator.styleProperty().bind(indicatorColor);
           System.out.println("binded with Counter");
         } catch (Exception e) {
           System.err.println("cannot bind");
@@ -173,7 +206,7 @@ public class FXMLDocumentController implements Initializable {
     progressIndicator.getScene().setOnKeyPressed((KeyEvent keyInput) -> {
       //GAME START ON SPACE
       if ( keyInput.getCode() == KeyCode.SPACE) {
-        Sound.start.play();
+        if(!isThreadRunning){Sound.start.play();}
         try {
           isGameStarted = true;
           updateProgress();

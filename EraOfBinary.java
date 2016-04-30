@@ -8,6 +8,8 @@
  * Current functions:
  *  # 2 phases of timer with different specific time
  *  # working progress Indicator binded with timer
+ * 
+ * Sound effect: YouTube.
  */
 package eraofbinary;
 
@@ -25,15 +27,17 @@ public class EraOfBinary extends Application {
   
   @Override
   public void start(Stage stage) throws Exception {
-    
     Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-    
     Scene scene = new Scene(root);
-    
+    stage.setTitle("Era Of Binary");
     stage.setScene(scene);
+    Sound.windowsStart.play();
     stage.show();
   }
-
+  @Override
+  public void stop(){
+    System.err.println("window is closing");
+  }
   /**
    * @param args the command line arguments
    */

@@ -92,9 +92,9 @@ public class timerTask extends Task<Void> {
       if(!Player.hasWinner()) {
         call();      
       } else {
-        System.out.print("loading");
+        System.out.println("loading");
         Statistics.loadUserData();
-        System.out.println(" finished");
+        System.out.println("finished");
         Statistics.compareStatistic();
         
         System.out.print("saving");

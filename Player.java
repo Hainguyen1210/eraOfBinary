@@ -90,7 +90,6 @@ public class Player {
         //clear Player's keys
         checkingPlayer.key = "";        
       }
-      System.out.println("Keys Cleared");
     } catch (Exception e) {
       System.err.println("failed to clear Key");
     }
@@ -102,12 +101,12 @@ public class Player {
         //clear Player's Received bits
         checkingPlayer.received = "";        
       }
-      System.out.println("Received Keys Cleared");
     } catch (Exception e) {
       System.err.println("failed to clear Received Keys");
     }
   }
   public static void routeData(){
+    int bitsAvailable = 0;
     //collect sent bits
     for(int i = 0; i < 3; i++) {
       int bitsSent = players.get(i).key.length();
@@ -124,7 +123,10 @@ public class Player {
         } catch (ArrayIndexOutOfBoundsException e) {
           checkingPlayer.received = sentData[players.size() - 1];
         }
+        bitsAvailable += checkingPlayer.received.length();
       }
+      if(bitsAvailable > 1) { Sound.power.play(); }
+      
     } catch (Exception e) {
       System.err.println("route failed");
     }
@@ -139,11 +141,9 @@ public class Player {
       }
       index++;
       
-      if( // count point only when players input some bits
-//        !checkingPlayer.key.equals("") && 
-        !checkingPlayer.received.equals("")
-        ) 
-      {
+      // count point only when players input some bits
+      if( !checkingPlayer.received.equals("") ) {
+        Sound.coin.play();
         if(checkingPlayer.key.equals(checkingPlayer.received)){
           checkingPlayer.currentPoint++;
         }else{

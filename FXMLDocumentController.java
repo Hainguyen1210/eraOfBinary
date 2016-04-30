@@ -5,13 +5,17 @@
  */
 package eraofbinary;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -19,6 +23,7 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 
 /**
  *
@@ -27,7 +32,7 @@ import javafx.scene.input.KeyEvent;
 public class FXMLDocumentController implements Initializable {
   private timerTask counter;
   private Thread currentThread;
-  public static boolean isSendingPhase, isThreadRunning = false, isGameStarted = false;
+  public static boolean isSendingPhase, isThreadRunning, isGameStarted;
   
   @FXML private AnchorPane mainPane, instructionPane;
   @FXML private Label 
@@ -44,17 +49,28 @@ public class FXMLDocumentController implements Initializable {
   public static int winningPoint;
   
   @Override  public void initialize(URL url, ResourceBundle rb) {
+    isThreadRunning = false;  isGameStarted = false;
+    Sound.playBackgoundSound();
     a = player1KeyLabel; sent1 = player1ReceivedLabel; point1 = player1PointLabel;
     b = player2KeyLabel; sent2 = player2ReceivedLabel; point2 = player2PointLabel;
     c = player3KeyLabel; sent3 = player3ReceivedLabel; point3 = player3PointLabel;
   }
-  @FXML private void onBackButton(){
-    instructionPane.setVisible(true);
-    backButton.setVisible(false);
-    progressIndicator.setVisible(false);
-    if (isThreadRunning){ currentThread.stop(); }
-    isThreadRunning=false;
+  private void resetGame() throws IOException{
+    if(isThreadRunning) {
+    counter.cancel(false);
+    currentThread.stop();
+    counter = null;
+    currentThread = null;
+    Player.players.clear();
+    }
+    
+    Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+    Stage currentStage = (Stage) mainPane.getScene().getWindow();
+    Scene scene = new Scene(root);
+    currentStage.setScene(scene);
+    currentStage.show();
   }
+  
   @FXML private void onStartButton(){
     //get winning points
     getWinningPoint();
@@ -86,16 +102,27 @@ public class FXMLDocumentController implements Initializable {
     System.out.println("player3Name " + playerNameStrings[2]);
     //create Players
     Player.players.add(0, new Player(playerNameStrings[0], a, sent1, point1, KeyCode.Z, KeyCode.X));
+    System.out.println(" checking------------------1");
     Player.players.add(1, new Player(playerNameStrings[1], b, sent2, point2, KeyCode.N, KeyCode.M));
+    System.out.println(" checking------------------2");
     Player.players.add(2, new Player(playerNameStrings[2], c, sent3, point3, KeyCode.NUMPAD1, KeyCode.NUMPAD2));
+    System.out.println(" checking------------------3");
+
+    try {
+      
     //Display Player's Names 
     for(int i = 0; i < 3; i++) {
       playerNameLabels[i].setText(Player.players.get(i).name);
     }
     //Hide the Instruction Panne
     instructionPane.setVisible(false);
-//    backButton.setVisible(true);
+  //    backButton.setVisible(true);
     progressIndicator.setVisible(true);
+    
+      System.out.println(" checking-----------------FINISHED");
+    } catch (Exception e) {
+      System.out.println(" checking-----------------FAILED");
+    }
   }
   @FXML private void getWinningPoint(){
     try {
@@ -146,6 +173,7 @@ public class FXMLDocumentController implements Initializable {
     progressIndicator.getScene().setOnKeyPressed((KeyEvent keyInput) -> {
       //GAME START ON SPACE
       if ( keyInput.getCode() == KeyCode.SPACE) {
+        Sound.start.play();
         try {
           isGameStarted = true;
           updateProgress();
@@ -153,12 +181,23 @@ public class FXMLDocumentController implements Initializable {
           Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
       }
+      //game reset on ESCAPE
+      if ( keyInput.getCode() == KeyCode.ESCAPE) {
+        Sound.error.play();
+        try {
+          resetGame();
+        } catch (IOException ex) {
+          Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      }
       if(isGameStarted) {        
         for(Player checkingPlayer : Player.players) {
           if (      keyInput.getCode() == checkingPlayer.key1) {
+            Sound.typeWriter.play();
             checkingPlayer.key += "0"; checkingPlayer.updateBitsUsed();
           }
           else if ( keyInput.getCode() == checkingPlayer.key2) {  
+            Sound.typeWriter.play();
             checkingPlayer.key += "1"; checkingPlayer.updateBitsUsed();
           }
           //update player's key label

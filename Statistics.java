@@ -51,31 +51,21 @@ public class Statistics {
       Scanner input = new Scanner(statistic);
       while(input.hasNextLine()) {
         String time = input.nextLine();
-        System.out.println(" 1");
         String highestWinningPointString = input.nextLine();
-        System.out.println(" 2");
         String higestBitsUsedString = input.nextLine();
-        System.out.println(" 3");
         String higestBitsSentString = input.nextLine();
-        System.out.println(" 4");
 
-        System.out.println(highestWinningPointString.length());
-        System.out.println("Highest winning point: ".length());
         highestWinningPointString = highestWinningPointString.substring("Highest winning point: ".length());
-        System.out.println(" 5");
         highestWinningPoint = Integer.parseInt(highestWinningPointString);
-        System.out.println(highestWinningPoint);
-        System.out.println(" 6");
+        System.out.println("  Highest winning points: " +  highestWinningPoint);
 
         higestBitsUsedString = higestBitsUsedString.substring("Highest bist used:     ".length());
-        System.out.println(" 7");
         highestBitsUsed = Integer.parseInt(higestBitsUsedString);
-        System.out.println(highestBitsUsed);
-        System.out.println(" 8");
+        System.out.println("  Highest bits used: " +  highestBitsUsed);
 
         higestBitsSentString = higestBitsSentString.substring("Highest bist sent:     ".length());
         highestBitsSent = Integer.parseInt(higestBitsSentString);
-        System.out.println(highestBitsSent);
+        System.out.println("  Highest bits sent: " +  highestBitsSent);
       } 
     } catch (FileNotFoundException | NumberFormatException e) {
       System.err.println("File statistic.txt is not available or contains error");

@@ -27,19 +27,21 @@ import javafx.scene.input.KeyEvent;
 public class FXMLDocumentController implements Initializable {
   private timerTask counter;
   private Thread currentThread;
-  public static boolean isSendingPhase, isThreadRunning = false;
+  public static boolean isSendingPhase, isThreadRunning = false, isGameStarted = false;
   
   @FXML private AnchorPane mainPane, instructionPane;
   @FXML private Label 
           player1NameLabel, player2NameLabel, player3NameLabel,
           player1KeyLabel, player2KeyLabel, player3KeyLabel,
           player1ReceivedLabel, player2ReceivedLabel, player3ReceivedLabel,
-          player1PointLabel, player2PointLabel, player3PointLabel;
+          player1PointLabel, player2PointLabel, player3PointLabel,
+          winningPointLabel;
   @FXML private TextField player1NameField, player2NameField, player3NameField;
+  @FXML private TextField winningPointField;
   @FXML private Button startButton, backButton;
   @FXML public ProgressIndicator progressIndicator;
   public static Label a, b, c, sent1, sent2, sent3, point1, point2, point3;
-  
+  public static int winningPoint;
   
   @Override  public void initialize(URL url, ResourceBundle rb) {
     a = player1KeyLabel; sent1 = player1ReceivedLabel; point1 = player1PointLabel;
@@ -54,6 +56,8 @@ public class FXMLDocumentController implements Initializable {
     isThreadRunning=false;
   }
   @FXML private void onStartButton(){
+    //get winning points
+    getWinningPoint();
     try {
       System.out.println("---enabling");
       enableKeyStroke();
@@ -90,8 +94,22 @@ public class FXMLDocumentController implements Initializable {
     }
     //Hide the Instruction Panne
     instructionPane.setVisible(false);
-    backButton.setVisible(true);
+//    backButton.setVisible(true);
     progressIndicator.setVisible(true);
+  }
+  @FXML private void getWinningPoint(){
+    try {
+      int checkingPoint;
+      checkingPoint = Integer.parseInt(winningPointField.getText());
+      if(checkingPoint <= 10) {
+        winningPoint = checkingPoint;
+      }
+    } catch (Exception e) {
+      winningPoint = 5;
+    }
+    winningPointLabel.setText("Winning points: " + Integer.toString(winningPoint));
+    winningPointLabel.setVisible(true);
+    winningPointField.setVisible(false);
   }
 
   @FXML private void updateProgress() throws InterruptedException{
@@ -126,12 +144,26 @@ public class FXMLDocumentController implements Initializable {
   @FXML private void enableKeyStroke(){
     //allow Players to enter key inputs
     progressIndicator.getScene().setOnKeyPressed((KeyEvent keyInput) -> {
-      for(Player checkingPlayer : Player.players) {
-        if (      keyInput.getCode() == checkingPlayer.key1) {  checkingPlayer.key += "0";}
-        else if ( keyInput.getCode() == checkingPlayer.key2) {  checkingPlayer.key += "1";}
-        //update player's key label
-        checkingPlayer.updateValue();
-//        printPlayersKeys();
+      //GAME START ON SPACE
+      if ( keyInput.getCode() == KeyCode.SPACE) {
+        try {
+          isGameStarted = true;
+          updateProgress();
+        } catch (InterruptedException ex) {
+          Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      }
+      if(isGameStarted) {        
+        for(Player checkingPlayer : Player.players) {
+          if (      keyInput.getCode() == checkingPlayer.key1) {
+            checkingPlayer.key += "0"; checkingPlayer.updateBitsUsed();
+          }
+          else if ( keyInput.getCode() == checkingPlayer.key2) {  
+            checkingPlayer.key += "1"; checkingPlayer.updateBitsUsed();
+          }
+          //update player's key label
+          checkingPlayer.updateValue();
+        }
       }
     });
   }

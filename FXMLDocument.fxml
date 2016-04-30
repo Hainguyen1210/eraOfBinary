@@ -10,79 +10,89 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="mainPane" prefHeight="480.0" prefWidth="651.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eraofbinary.FXMLDocumentController">
+<AnchorPane id="AnchorPane" fx:id="mainPane" prefHeight="498.0" prefWidth="651.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eraofbinary.FXMLDocumentController">
     <children>
-      <ProgressIndicator fx:id="progressIndicator" layoutY="5.0" onMousePressed="#updateProgress" prefHeight="473.0" prefWidth="651.0" progress="0.0" visible="false" />
-      <Button fx:id="backButton" layoutX="12.0" layoutY="14.0" mnemonicParsing="false" onAction="#onBackButton" prefHeight="31.0" prefWidth="52.0" text="&lt;&lt;&lt;" visible="false">
+      <ProgressIndicator fx:id="progressIndicator" layoutX="91.0" layoutY="102.0" prefHeight="234.0" prefWidth="471.0" progress="0.0" visible="false" />
+      <Label fx:id="winningPointLabel" alignment="CENTER" disable="true" layoutX="241.0" layoutY="58.0" prefHeight="44.0" prefWidth="172.0" text="winning point" visible="false">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="player1PointLabel" alignment="CENTER" layoutX="134.0" layoutY="167.0" prefHeight="44.0" prefWidth="42.0" text="0" textFill="#3e3eda">
+         <font>
+            <Font name="System Bold" size="27.0" />
+         </font>
+      </Label>
+      <Label fx:id="player1ReceivedLabel" alignment="CENTER" layoutX="69.0" layoutY="122.0" prefHeight="30.0" prefWidth="172.0" text="received key" textFill="#059700">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
-      </Button>
-      <Label fx:id="player1PointLabel" alignment="CENTER" layoutX="133.0" layoutY="123.0" prefHeight="44.0" prefWidth="42.0" text="0" textFill="#3e3eda">
+      </Label>
+      <Label fx:id="player1KeyLabel" alignment="CENTER" layoutX="69.0" layoutY="137.0" prefHeight="30.0" prefWidth="172.0" text="1st Player's key">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="player1NameLabel" alignment="CENTER_RIGHT" layoutX="24.0" layoutY="176.0" prefHeight="25.0" prefWidth="90.0" text="1st Player's name" />
+      <Label fx:id="player2PointLabel" alignment="CENTER" layoutX="478.0" layoutY="167.0" prefHeight="44.0" prefWidth="42.0" text="0" textFill="#e1e10b">
          <font>
             <Font name="System Bold" size="27.0" />
          </font>
       </Label>
-      <Label fx:id="player1ReceivedLabel" alignment="CENTER" layoutX="68.0" layoutY="78.0" prefHeight="30.0" prefWidth="172.0" text="1st Player's received key" textFill="#059700">
+      <Label fx:id="player2ReceivedLabel" alignment="CENTER" layoutX="413.0" layoutY="122.0" prefHeight="30.0" prefWidth="172.0" text="received key" textFill="#059700">
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label fx:id="player1KeyLabel" alignment="CENTER" layoutX="68.0" layoutY="93.0" prefHeight="30.0" prefWidth="172.0" text="1st Player's key">
+      <Label fx:id="player2KeyLabel" alignment="CENTER" layoutX="413.0" layoutY="137.0" prefHeight="30.0" prefWidth="172.0" text="2nd Player's key">
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label fx:id="player1NameLabel" alignment="CENTER_RIGHT" layoutX="23.0" layoutY="132.0" prefHeight="25.0" prefWidth="90.0" text="1st Player's name" />
-      <Label fx:id="player2PointLabel" alignment="CENTER" layoutX="477.0" layoutY="123.0" prefHeight="44.0" prefWidth="42.0" text="0" textFill="#e1e10b">
-         <font>
-            <Font name="System Bold" size="27.0" />
-         </font>
-      </Label>
-      <Label fx:id="player2ReceivedLabel" alignment="CENTER" layoutX="412.0" layoutY="78.0" prefHeight="30.0" prefWidth="172.0" text="2nd Player's received key" textFill="#059700">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Label>
-      <Label fx:id="player2KeyLabel" alignment="CENTER" layoutX="412.0" layoutY="93.0" prefHeight="30.0" prefWidth="172.0" text="2nd Player's key">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Label>
-      <Label fx:id="player2NameLabel" layoutX="539.0" layoutY="132.0" prefHeight="25.0" prefWidth="90.0" text="2nd Player's name" />
-      <Label fx:id="player3PointLabel" alignment="CENTER" layoutX="306.0" layoutY="287.0" prefHeight="44.0" prefWidth="42.0" text="0" textFill="#ff0c0c">
+      <Label fx:id="player2NameLabel" layoutX="540.0" layoutY="176.0" prefHeight="25.0" prefWidth="90.0" text="2nd Player's name" />
+      <Label fx:id="player3PointLabel" alignment="CENTER" layoutX="307.0" layoutY="378.0" prefHeight="44.0" prefWidth="42.0" text="0" textFill="#ff0c0c">
          <font>
             <Font name="System Bold" size="27.0" />
          </font>
       </Label>
-      <Label fx:id="player3ReceivedLabel" alignment="CENTER" layoutX="240.0" layoutY="242.0" prefHeight="30.0" prefWidth="172.0" text="3rd Player's received key" textFill="#059700">
+      <Label fx:id="player3ReceivedLabel" alignment="CENTER" layoutX="241.0" layoutY="333.0" prefHeight="30.0" prefWidth="172.0" text="received key" textFill="#059700">
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label fx:id="player3KeyLabel" alignment="CENTER" layoutX="240.0" layoutY="257.0" prefHeight="30.0" prefWidth="172.0" text="3rd Player's key">
+      <Label fx:id="player3KeyLabel" alignment="CENTER" layoutX="241.0" layoutY="348.0" prefHeight="30.0" prefWidth="172.0" text="3rd Player's key">
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label fx:id="player3NameLabel" alignment="CENTER" layoutX="281.0" layoutY="340.0" prefHeight="25.0" prefWidth="90.0" text="3rd Player's name" />
-      <AnchorPane fx:id="instructionPane" layoutX="64.0" layoutY="93.0" prefHeight="319.0" prefWidth="526.0">
+      <Label fx:id="player3NameLabel" alignment="CENTER" layoutX="282.0" layoutY="422.0" prefHeight="25.0" prefWidth="90.0" text="3rd Player's name" />
+      <AnchorPane fx:id="instructionPane" layoutX="64.0" layoutY="61.0" prefHeight="423.0" prefWidth="526.0">
          <children>
-              <Button fx:id="startButton" layoutX="177.0" layoutY="38.0" onAction="#onStartButton" prefHeight="110.0" prefWidth="172.0" text="Start">
+              <Button fx:id="startButton" layoutX="196.0" layoutY="94.0" onAction="#onStartButton" prefHeight="110.0" prefWidth="134.0" style="-fx-background-radius: 50, 50, 50, 50;" text="Start">
                <font>
                   <Font name="System Bold" size="36.0" />
                </font>
             </Button>
-            <TextField fx:id="player1NameField" alignment="CENTER" layoutY="81.0" prefHeight="25.0" prefWidth="172.0" promptText="Player's name" />
-            <TextField fx:id="player2NameField" alignment="CENTER" layoutX="354.0" layoutY="81.0" prefHeight="25.0" prefWidth="172.0" promptText="Player's name" />
-            <TextField fx:id="player3NameField" alignment="CENTER" layoutX="177.0" layoutY="245.0" prefHeight="25.0" prefWidth="172.0" promptText="Player's name" />
-            <Button layoutY="114.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Z" />
-            <Button layoutX="97.0" layoutY="114.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="X" />
-            <Button layoutX="354.0" layoutY="114.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="N" />
-            <Button layoutX="451.0" layoutY="114.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="M" />
-            <Button layoutX="274.0" layoutY="278.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="NUM 2" />
-            <Button layoutX="177.0" layoutY="278.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="NUM 1" />
+            <TextField fx:id="player1NameField" alignment="CENTER" layoutY="149.0" prefHeight="25.0" prefWidth="172.0" promptText="Player's name" />
+            <TextField fx:id="player2NameField" alignment="CENTER" layoutX="354.0" layoutY="149.0" prefHeight="25.0" prefWidth="172.0" promptText="Player's name" />
+            <Button layoutY="182.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Z" />
+            <Button layoutX="97.0" layoutY="182.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="X" />
+            <Button layoutX="354.0" layoutY="182.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="N" />
+            <Button layoutX="451.0" layoutY="182.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="M" />
+            <TextField fx:id="player3NameField" alignment="CENTER" layoutX="177.0" layoutY="363.0" prefHeight="25.0" prefWidth="172.0" promptText="Player's name" />
+            <Button layoutX="274.0" layoutY="396.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="NUM 2" />
+            <Button layoutX="177.0" layoutY="396.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="NUM 1" />
+            <TextField fx:id="winningPointField" alignment="CENTER" layoutX="187.0" layoutY="7.0" prefHeight="44.0" prefWidth="156.0" promptText="Winning point">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </TextField>
          </children>
       </AnchorPane>
+      <Label fx:id="winningPointLabel1" alignment="CENTER" layoutX="217.0" layoutY="14.0" prefHeight="44.0" prefWidth="220.0" text="Era of Binary">
+         <font>
+            <Font name="System Bold" size="29.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

@@ -44,16 +44,6 @@ public class timerTask extends Task<Void> {
   protected Void call()throws Exception{
     System.out.println("Task Started");
     
-    if(FXMLDocumentController.isSendingPhase) {
-      Player.routeData();
-      Player.clearPlayerKeys();
-    } else{
-      Player.countPoint();
-      Player.clearPlayerReceived();
-      Player.clearPlayerKeys();
-    }
-    Player.updateUI();
-    
     if(is2PhasesMode){
     //swap between 2 periods of time so timer counts different each turn
       swapSeconds();
@@ -83,11 +73,34 @@ public class timerTask extends Task<Void> {
     }
     System.out.print("end while loop ");
     
+    //
+      if(FXMLDocumentController.isSendingPhase) {
+      Player.routeData();
+      Player.clearPlayerKeys();
+    } else{
+      Player.countPoint();
+      Player.clearPlayerReceived();
+      Player.clearPlayerKeys();
+    }
+    Player.updateUI();
+    
     //repeat the counter
     if (runningTime>=endTime) {
       System.out.println("run again");
       System.out.println("---------------------------------");
-      call();
+      
+      if(!Player.hasWinner()) {
+        call();      
+      } else {
+        System.out.print("loading");
+        Statistics.loadUserData();
+        System.out.println(" finished");
+        Statistics.compareStatistic();
+        
+        System.out.print("saving");
+        Statistics.saveUserData();
+        System.out.println(" finished");
+      }
     }
     return null;
   }

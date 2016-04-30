@@ -19,18 +19,23 @@ import javafx.scene.control.Label;
  */
 public class Player {
   public static ArrayList<Player> players = new ArrayList<>();
-  public StringProperty keyProperty = new SimpleStringProperty("Key Field");
-  public StringProperty receivedProperty = new SimpleStringProperty("Received Field");
-  public StringProperty pointProperty = new SimpleStringProperty("Player's points");
+  private StringProperty keyProperty = new SimpleStringProperty("Key Field");
+  private StringProperty receivedProperty = new SimpleStringProperty("Received Field");
+  private StringProperty pointProperty = new SimpleStringProperty("#");
   
   public String 
           key="",
           received="",
           name;
-  public int
+  private int
+          bitsUsed = 0,
+          bitsSent = 0,
           currentPoint = 0;
   public KeyCode key1, key2;
   
+  public Player(String playerName){
+    this.name = playerName;
+  }
   public Player(String playerName, KeyCode key1, KeyCode key2){
     this.name = playerName;
     this.key1 = key1;
@@ -52,6 +57,25 @@ public class Player {
     } catch (NullPointerException e) {
       System.err.println("can not bind key label and received Label");
     }
+  }
+ 
+  public final void updateBitsUsed(){
+    this.bitsUsed++;
+  }
+  public final void updateBitsSent(int bitsSent){
+    this.bitsSent += bitsSent;
+  }
+  public final String getBitsUsedString(){
+    return Integer.toString(this.bitsUsed);
+  }
+  public final String getBitsSentString(){
+    return Integer.toString(this.bitsSent);
+  }
+  public final int getBitsUsed(){
+    return this.bitsUsed;
+  }
+  public final int getBitsSent(){
+    return this.bitsSent;
   }
   
   public final void updateValue(){
@@ -84,16 +108,21 @@ public class Player {
     }
   }
   public static void routeData(){
+    //collect sent bits
+    for(int i = 0; i < 3; i++) {
+      int bitsSent = players.get(i).key.length();
+      players.get(i).updateBitsSent(bitsSent);
+    }
     //swap Player's keys
     try {
-      String [] receivedData = {players.get(0).key, players.get(1).key, players.get(2).key};
-      System.out.println(Arrays.toString(receivedData));
+      String [] sentData = {players.get(0).key, players.get(1).key, players.get(2).key};
+      System.out.println(Arrays.toString(sentData));
       for(Player checkingPlayer : players) {
         int index = players.indexOf(checkingPlayer);
         try {
-          checkingPlayer.received = receivedData[index-1];
+          checkingPlayer.received = sentData[index-1];
         } catch (ArrayIndexOutOfBoundsException e) {
-          checkingPlayer.received = receivedData[players.size() - 1];
+          checkingPlayer.received = sentData[players.size() - 1];
         }
       }
     } catch (Exception e) {
@@ -114,7 +143,10 @@ public class Player {
   }
   public static void updateUI(){
     for(Player checkingPlayer : players) {
-      System.out.println(Player.players.indexOf(checkingPlayer) + ": " + checkingPlayer.key + " ||");
+      System.out.println(
+        Player.players.indexOf(checkingPlayer) + " ||" 
+        + " bitsUsed: " + checkingPlayer.bitsUsed + " bits Sent: " + checkingPlayer.bitsSent
+      );
       //update UI
       Platform.runLater(new Runnable() {
         @Override
@@ -127,5 +159,13 @@ public class Player {
         }
       });
     }
+  }
+  public static boolean hasWinner(){
+    for (Player checkingPlayer : players) {
+      if(checkingPlayer.currentPoint == FXMLDocumentController.winningPoint) {
+        return true;
+      }
+    }
+    return false;
   }
 }

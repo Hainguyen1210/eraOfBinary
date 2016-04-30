@@ -130,15 +130,27 @@ public class Player {
     }
   }
   public static void countPoint(){
+    Player previousPlayer;
+    int index = 0;
     for(Player checkingPlayer : players) {
-      if(
-        !checkingPlayer.key.equals("") && 
-        !checkingPlayer.received.equals("") && 
-        checkingPlayer.key.equals(checkingPlayer.received)
+      try{        previousPlayer = players.get(index-1);      }
+      catch (ArrayIndexOutOfBoundsException e) {
+        previousPlayer = players.get(players.size()-1);
+      }
+      index++;
+      
+      if( // count point only when players input some bits
+//        !checkingPlayer.key.equals("") && 
+        !checkingPlayer.received.equals("")
         ) 
       {
-        checkingPlayer.currentPoint++;
+        if(checkingPlayer.key.equals(checkingPlayer.received)){
+          checkingPlayer.currentPoint++;
+        }else{
+          previousPlayer.currentPoint++;
+        }
       }
+      
     }
   }
   public static void updateUI(){

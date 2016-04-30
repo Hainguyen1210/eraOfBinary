@@ -10,12 +10,15 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -24,13 +27,17 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  *
  * @author haing
  */
 public class FXMLDocumentController implements Initializable {
+  public static TranslateTransition moving; //for animation
   private timerTask counter;
   private Thread currentThread;
   public static boolean isSendingPhase, isThreadRunning, isGameStarted;
@@ -47,9 +54,9 @@ public class FXMLDocumentController implements Initializable {
   @FXML public ProgressIndicator progressIndicator;
   public static Label a, b, c, sent1, sent2, sent3, point1, point2, point3;
   public static int winningPoint;
-  public static String[] colors = {"-fx-progress-color: yellow;", "-fx-progress-color: blue;" };
+  public static String[] colors = {"-fx-progress-color: red;", "-fx-progress-color: blue;" };
   public static int colorIndex = 0;
-  public static StringProperty indicatorColor = new SimpleStringProperty("-fx-progress-color: yellow;");
+  public static StringProperty indicatorColor = new SimpleStringProperty("-fx-progress-color: red;");
   
   @Override  public void initialize(URL url, ResourceBundle rb) {
     isThreadRunning = false;  isGameStarted = false;
@@ -179,8 +186,8 @@ public class FXMLDocumentController implements Initializable {
     
     //Don't run if there is already a thread running
     if(!isThreadRunning){
-      try {//try to create timerTask
-        counter = new timerTask(2, 4);
+      try {//try to create timerTask ------------EDIT TIMER HERE
+        counter = new timerTask(1, 3);
         try {//try to bind UI with counter task  
           progressIndicator.progressProperty().bind(counter.progressProperty());
           progressIndicator.styleProperty().bind(indicatorColor);
@@ -223,16 +230,20 @@ public class FXMLDocumentController implements Initializable {
           Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
       }
-      if(isGameStarted) {        
+      //Player's inputs as 0 and 1
+      if(isGameStarted ) {
         for(Player checkingPlayer : Player.players) {
           if (      keyInput.getCode() == checkingPlayer.key1) {
             Sound.typeWriter.play();
             checkingPlayer.key += "0"; checkingPlayer.updateBitsUsed();
+            sentPackageAnimation(checkingPlayer, Color.DARKORANGE);
           }
           else if ( keyInput.getCode() == checkingPlayer.key2) {  
             Sound.typeWriter.play();
             checkingPlayer.key += "1"; checkingPlayer.updateBitsUsed();
+            sentPackageAnimation(checkingPlayer, Color.PURPLE);
           }
+          //create dots animation
           //update player's key label
           checkingPlayer.updateValue();
         }
@@ -247,5 +258,32 @@ public class FXMLDocumentController implements Initializable {
       catch (Exception e) {        System.err.println("cannot print PlayerKeys" + index);      }
       index++;
     }
+  }
+  
+  private void sentPackageAnimation(Player player, Color color) {
+    switch (Player.players.indexOf(player)) {
+      case 0: createDots(point1, point2, color); break;
+      case 1: createDots(point2, point3, color); break;
+      case 2: createDots(point3, point1, color); break;
+    }
+  }
+  private void createDots(Node currentNode, Node targetNode, Color color){
+    //create a little dot then move it from current Node to the Centre
+    //On Finished, start routPackage
+    ObservableList<Node> childrenPane = mainPane.getChildren();
+    Circle packageCircle = new Circle(0, 0, 2, color);
+    childrenPane.add(packageCircle);
+    
+    FXMLDocumentController.moving = new TranslateTransition(Duration.millis(500), packageCircle);
+    moving.setAutoReverse(true);moving.setCycleCount(1);
+    moving.setFromX(currentNode.getLayoutX()  +  20);
+    moving.setFromY(currentNode.getLayoutY()  +  20);
+    moving.setToX(  targetNode.getLayoutX()   +  20);
+    moving.setToY(  targetNode.getLayoutY()   +  20);    
+    moving.play(); 
+    
+    moving.setOnFinished(ActionEvent -> {
+        childrenPane.remove(packageCircle); 
+      });
   }
 }

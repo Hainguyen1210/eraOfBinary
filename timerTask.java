@@ -16,19 +16,28 @@ import javafx.concurrent.Task;
 public class timerTask extends Task<Void> {
   private int currentSeconds, second1, second2, chosenSecond = 1;
   private final boolean is2PhasesMode;
+  private boolean isSendingPhase;
   
+  //constructors
   public timerTask(int seconds){
     this.chosenSecond = seconds;
     this.is2PhasesMode = false;
+    
+    if(Player.is3Players) {this.isSendingPhase = match3Controller.isSendingPhase;}
+    else { this.isSendingPhase = match2Controller.isSendingPhase;}
   }
   public timerTask(int second1, int second2){
     this.second1 = second1;
     this.second2 = second2;
     this.chosenSecond = second2;
     is2PhasesMode = true;
+    
+    if(Player.is3Players) {this.isSendingPhase = match3Controller.isSendingPhase;}
+    else { this.isSendingPhase = match2Controller.isSendingPhase;}
   }
   
   private void swapSeconds(){
+    //toggle between 2 periods of time
     if (chosenSecond == second1){
       chosenSecond = second2;
     } else {
@@ -37,7 +46,10 @@ public class timerTask extends Task<Void> {
   }
   private void swapMode(){
     //swap between SENDING mode and DECODING mode
-    FXMLDocumentController.isSendingPhase = chosenSecond == second1;
+    this.isSendingPhase = chosenSecond == second1;
+    match2Controller.isSendingPhase = this.isSendingPhase;
+    match2Controller.isSendingPhase = this.isSendingPhase;
+    
   }
   
   @Override
@@ -58,7 +70,7 @@ public class timerTask extends Task<Void> {
     long runningTime = startTime, totalTime = endTime - startTime;
     long temp = startTime + 1000;
     
-    System.out.println("isSendingPhase? " + FXMLDocumentController.isSendingPhase);
+    System.out.println("isSendingPhase? " + this.isSendingPhase);
     System.out.print(currentSeconds + " ");
     
     //count each second
@@ -74,7 +86,7 @@ public class timerTask extends Task<Void> {
     System.out.print("end while loop ");
     
     //rout packages and count points
-      if(FXMLDocumentController.isSendingPhase) {
+      if(this.isSendingPhase) {
       Player.routeData();
       Player.clearPlayerKeys();
     } else{
@@ -82,9 +94,12 @@ public class timerTask extends Task<Void> {
       Player.clearPlayerReceived();
       Player.clearPlayerKeys();
     }
-      System.out.println("changing color");
-      FXMLDocumentController.swapIndicatorColor();
-      System.out.println("color changed");
+      
+    System.out.println("changing color");
+    if(Player.is3Players) { match3Controller.swapIndicatorColor(); }
+    else { match2Controller.swapIndicatorColor(); }
+    System.out.println("color changed");
+    
     Player.updateUI();
     
     //repeat the counter

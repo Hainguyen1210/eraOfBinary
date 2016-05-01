@@ -11,7 +11,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="mainPane" prefHeight="500.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eraofbinary.FXMLDocumentController">
+<AnchorPane id="AnchorPane" fx:id="mainPane" prefHeight="500.0" prefWidth="650.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eraofbinary.match3Controller">
     <children>
       <ProgressIndicator fx:id="progressIndicator" layoutX="91.0" layoutY="102.0" prefHeight="234.0" prefWidth="471.0" progress="0.0" visible="false" />
       <Label fx:id="winningPointLabel" alignment="CENTER" disable="true" layoutX="241.0" layoutY="58.0" prefHeight="44.0" prefWidth="172.0" text="winning point" visible="false">
@@ -67,8 +67,13 @@
          </font>
       </Label>
       <Label fx:id="player3NameLabel" alignment="CENTER" layoutX="282.0" layoutY="422.0" prefHeight="25.0" prefWidth="90.0" text="3rd Player's name" />
-      <AnchorPane fx:id="instructionPane" layoutX="64.0" layoutY="61.0" prefHeight="423.0" prefWidth="526.0">
+      <AnchorPane fx:id="instructionPane" layoutX="64.0" layoutY="61.0" prefHeight="423.0" prefWidth="526.0" style="-fx-background-color: white;">
          <children>
+            <TextField fx:id="winningPointField" alignment="CENTER" layoutX="187.0" layoutY="7.0" prefHeight="44.0" prefWidth="156.0" promptText="Winning point">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </TextField>
               <Button fx:id="startButton" layoutX="196.0" layoutY="94.0" onAction="#onStartButton" prefHeight="110.0" prefWidth="134.0" style="-fx-background-radius: 50, 50, 50, 50;" text="Start">
                <font>
                   <Font name="System Bold" size="36.0" />
@@ -83,11 +88,14 @@
             <TextField fx:id="player3NameField" alignment="CENTER" layoutX="177.0" layoutY="363.0" prefHeight="25.0" prefWidth="172.0" promptText="Player's name" />
             <Button layoutX="274.0" layoutY="396.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="NUM 2" />
             <Button layoutX="177.0" layoutY="396.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="NUM 1" />
-            <TextField fx:id="winningPointField" alignment="CENTER" layoutX="187.0" layoutY="7.0" prefHeight="44.0" prefWidth="156.0" promptText="Winning point">
+            <Button alignment="CENTER" layoutX="196.0" layoutY="204.0" onAction="#backToMainMenu" prefHeight="44.0" prefWidth="134.0" style="-fx-background-radius: 50, 50, 50, 50; -fx-background-color: white;" text="Cancel" textFill="#e10e0e">
                <font>
-                  <Font name="System Bold" size="20.0" />
+                  <Font name="System Bold" size="21.0" />
                </font>
-            </TextField>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Button>
          </children>
       </AnchorPane>
       <Label fx:id="winningPointLabel1" alignment="CENTER" layoutX="217.0" layoutY="14.0" prefHeight="44.0" prefWidth="220.0" text="Era of Binary">

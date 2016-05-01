@@ -13,7 +13,7 @@ import static javafx.scene.media.AudioClip.INDEFINITE;
  * @author haing
  */
 public class Sound {
-  private final static AudioClip background = new AudioClip( Sound.class.getResource("sound/searching.wav").toExternalForm());
+  public final static AudioClip background = new AudioClip( Sound.class.getResource("sound/searching.wav").toExternalForm());
   public final static AudioClip coin = new AudioClip( Sound.class.getResource("sound/Pickup_Coin.wav").toExternalForm());
   public final static AudioClip power = new AudioClip( Sound.class.getResource("sound/Powerup.wav").toExternalForm());
   public final static AudioClip typeWriter = new AudioClip( Sound.class.getResource("sound/typewriter.wav").toExternalForm());

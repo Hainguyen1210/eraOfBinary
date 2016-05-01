@@ -27,11 +27,11 @@ public class EraOfBinary extends Application {
   
   @Override
   public void start(Stage stage) throws Exception {
-    Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+    Sound.windowsStart.play();
+    Parent root = FXMLLoader.load(getClass().getResource("chooseMode.fxml"));
     Scene scene = new Scene(root);
     stage.setTitle("Era Of Binary");
     stage.setScene(scene);
-    Sound.windowsStart.play();
     stage.show();
   }
   @Override

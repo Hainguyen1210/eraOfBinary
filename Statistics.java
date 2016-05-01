@@ -59,21 +59,25 @@ public class Statistics {
         highestWinningPoint = Integer.parseInt(highestWinningPointString);
         System.out.println("  Highest winning points: " +  highestWinningPoint);
 
-        higestBitsUsedString = higestBitsUsedString.substring("Highest bist used:     ".length());
+        higestBitsUsedString = higestBitsUsedString.substring("Highest bits used:     ".length());
         highestBitsUsed = Integer.parseInt(higestBitsUsedString);
         System.out.println("  Highest bits used: " +  highestBitsUsed);
 
-        higestBitsSentString = higestBitsSentString.substring("Highest bist sent:     ".length());
+        higestBitsSentString = higestBitsSentString.substring("Highest bits sent:     ".length());
         highestBitsSent = Integer.parseInt(higestBitsSentString);
         System.out.println("  Highest bits sent: " +  highestBitsSent);
       } 
     } catch (FileNotFoundException | NumberFormatException e) {
-      System.err.println("File statistic.txt is not available or contains error");
+      System.err.println("File statistic.txt is not available or contains error or first time running");
     }
   }
   public static void compareStatistic(){
-    if( FXMLDocumentController.winningPoint > highestWinningPoint) {
-      highestWinningPoint = FXMLDocumentController.winningPoint;
+    int winningPoint = 5;
+    if(Player.is3Players) { winningPoint = match3Controller.winningPoint;  } 
+    else { winningPoint = match2Controller.winningPoint ; }
+    
+    if( winningPoint > highestWinningPoint) {
+      highestWinningPoint = winningPoint;
     }
     for(Player checkingPlayer : Player.players) {
       if( checkingPlayer.getBitsUsed() > highestBitsUsed) {
@@ -92,7 +96,7 @@ public class Statistics {
     try {
       FileWriter logger = new FileWriter(LOG_FILE, true);
       logger.write("Time: " + dateProvider.get() + System.lineSeparator());
-      logger.write("Winnning point: " + FXMLDocumentController.winningPoint + System.lineSeparator());
+      logger.write("Winnning point: " + match3Controller.winningPoint + System.lineSeparator());
       logger.write("Player's name: " + System.lineSeparator());
       for (Player exportingPlayers: Player.players) {
         logger.write("      " + exportingPlayers.name + " " );

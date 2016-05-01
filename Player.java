@@ -5,9 +5,6 @@
  */
 package eraofbinary;
 
-import static eraofbinary.FXMLDocumentController.colorIndex;
-import static eraofbinary.FXMLDocumentController.colors;
-import static eraofbinary.FXMLDocumentController.indicatorColor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javafx.application.Platform;
@@ -25,7 +22,7 @@ public class Player {
   private StringProperty keyProperty = new SimpleStringProperty("Key Field");
   private StringProperty receivedProperty = new SimpleStringProperty("Received Field");
   private StringProperty pointProperty = new SimpleStringProperty("#");
-  
+  public static boolean is3Players = false;
   public String 
           key="",
           received="",
@@ -50,9 +47,9 @@ public class Player {
     this.name = playerName;
     this.key1 = key1;
     this.key2 = key2;
-    if(receivedLabel == null) {
-      System.out.println("eraofbinary.Player.<init>()");
-    }
+//    if(receivedLabel == null) {
+//      System.out.println("eraofbinary.Player.<init>()");
+//    }
     try {
       keyLabel.textProperty().bind(this.keyProperty);
       receivedLabel.textProperty().bind(this.receivedProperty);
@@ -85,8 +82,6 @@ public class Player {
     this.keyProperty.set(this.key);
     this.receivedProperty.set(this.received);
     this.pointProperty.set(Integer.toString(this.currentPoint));
-//    indicatorColor.set(colors[colorIndex]);
-//    FXMLDocumentController.indicatorColor.set(FXMLDocumentController.colors[FXMLDocumentController.colorIndex]);
   }
   public static void clearPlayerKeys(){
     //clear all player's keys 
@@ -111,15 +106,26 @@ public class Player {
     }
   }
   public static void routeData(){
-    int bitsAvailable = 0;
+    //route bits between players in a circle
+    int bitsAvailable = 0; //check if there is bits to route
+    int numberOfplayers = 0;
+    if(is3Players) { numberOfplayers = 3; }
+    else { numberOfplayers = 2; }
+    
     //collect sent bits
-    for(int i = 0; i < 3; i++) {
+    for(int i = 0; i < numberOfplayers; i++) {
       int bitsSent = players.get(i).key.length();
       players.get(i).updateBitsSent(bitsSent);
     }
     //swap Player's keys
     try {
-      String [] sentData = {players.get(0).key, players.get(1).key, players.get(2).key};
+      String [] sentData;
+      if(is3Players) {
+        sentData = new String[] {players.get(0).key, players.get(1).key, players.get(2).key};
+      } else {
+        sentData = new String[] {players.get(0).key, players.get(1).key};
+      }
+      
       System.out.println(Arrays.toString(sentData));
       for(Player checkingPlayer : players) {
         int index = players.indexOf(checkingPlayer);
@@ -178,8 +184,12 @@ public class Player {
     }
   }
   public static boolean hasWinner(){
+    int winningPoint = 5;
+    if (is3Players) { winningPoint = match3Controller.winningPoint;  }
+    else{ winningPoint = match2Controller.winningPoint;  }
+    
     for (Player checkingPlayer : players) {
-      if(checkingPlayer.currentPoint == FXMLDocumentController.winningPoint) {
+      if(checkingPlayer.currentPoint == winningPoint) {
         return true;
       }
     }

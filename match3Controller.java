@@ -36,7 +36,7 @@ import javafx.util.Duration;
  *
  * @author haing
  */
-public class FXMLDocumentController implements Initializable {
+public class match3Controller implements Initializable {
   public static TranslateTransition moving; //for animation
   private timerTask counter;
   private Thread currentThread;
@@ -55,16 +55,29 @@ public class FXMLDocumentController implements Initializable {
   public static Label a, b, c, sent1, sent2, sent3, point1, point2, point3;
   public static int winningPoint;
   public static String[] colors = {"-fx-progress-color: red;", "-fx-progress-color: blue;" };
-  public static int colorIndex = 0;
-  public static StringProperty indicatorColor = new SimpleStringProperty("-fx-progress-color: red;");
+  public static int colorIndex;
+  public static StringProperty indicatorColor;
   
   @Override  public void initialize(URL url, ResourceBundle rb) {
+    isSendingPhase = true;
+    indicatorColor = new SimpleStringProperty("-fx-progress-color: red;");
+    colorIndex = 0;
     isThreadRunning = false;  isGameStarted = false;
     Sound.playBackgoundSound();
     a = player1KeyLabel; sent1 = player1ReceivedLabel; point1 = player1PointLabel;
     b = player2KeyLabel; sent2 = player2ReceivedLabel; point2 = player2PointLabel;
     c = player3KeyLabel; sent3 = player3ReceivedLabel; point3 = player3PointLabel;
   }
+  
+  @FXML private void backToMainMenu() throws IOException{
+    Sound.background.stop();
+    Stage currentStage = (Stage) mainPane.getScene().getWindow();
+    Parent root = FXMLLoader.load(getClass().getResource("chooseMode.fxml"));
+    Scene scene = new Scene(root);
+    currentStage.setScene(scene);
+    currentStage.show();
+  }
+  
   public static void swapIndicatorColor(){
     if(colorIndex == 0 ) {  colorIndex = 1;    }
     else {  colorIndex = 0; }
@@ -89,27 +102,13 @@ public class FXMLDocumentController implements Initializable {
     Player.players.clear();
     }
     
-    Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+    Parent root = FXMLLoader.load(getClass().getResource("match3.fxml"));
     Stage currentStage = (Stage) mainPane.getScene().getWindow();
     Scene scene = new Scene(root);
     currentStage.setScene(scene);
     currentStage.show();
   }
-  public void winnerScene() throws IOException{
-    if(isThreadRunning) {
-    counter.cancel(false);
-    currentThread.stop();
-    counter = null;
-    currentThread = null;
-    Player.players.clear();
-    }
-    
-    Parent root = FXMLLoader.load(getClass().getResource("GameOver.fxml"));
-    Stage currentStage = (Stage) mainPane.getScene().getWindow();
-    Scene scene = new Scene(root);
-    currentStage.setScene(scene);
-    currentStage.show();
-  }
+
   @FXML private void onStartButton(){
     //get winning points
     getWinningPoint();
@@ -170,7 +169,7 @@ public class FXMLDocumentController implements Initializable {
       if(checkingPoint <= 10) {
         winningPoint = checkingPoint;
       }
-    } catch (Exception e) {
+    } catch (NumberFormatException e) {
       winningPoint = 5;
     }
     winningPointLabel.setText("Winning points: " + Integer.toString(winningPoint));
@@ -218,16 +217,16 @@ public class FXMLDocumentController implements Initializable {
           isGameStarted = true;
           updateProgress();
         } catch (InterruptedException ex) {
-          Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+          Logger.getLogger(match3Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
       }
-      //game reset on ESCAPE
+      // on ESCAPE 
       if ( keyInput.getCode() == KeyCode.ESCAPE) {
         Sound.error.play();
-        try {
+        try {//------------RESET THE GAME
           resetGame();
         } catch (IOException ex) {
-          Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+          Logger.getLogger(match2Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
       }
       //Player's inputs as 0 and 1
@@ -236,12 +235,12 @@ public class FXMLDocumentController implements Initializable {
           if (      keyInput.getCode() == checkingPlayer.key1) {
             Sound.typeWriter.play();
             checkingPlayer.key += "0"; checkingPlayer.updateBitsUsed();
-            sentPackageAnimation(checkingPlayer, Color.DARKORANGE);
+            if(isSendingPhase){ sentPackageAnimation(checkingPlayer, Color.DARKORANGE); }
           }
           else if ( keyInput.getCode() == checkingPlayer.key2) {  
             Sound.typeWriter.play();
             checkingPlayer.key += "1"; checkingPlayer.updateBitsUsed();
-            sentPackageAnimation(checkingPlayer, Color.PURPLE);
+            if(isSendingPhase){ sentPackageAnimation(checkingPlayer, Color.PURPLE);}
           }
           //create dots animation
           //update player's key label
@@ -268,13 +267,12 @@ public class FXMLDocumentController implements Initializable {
     }
   }
   private void createDots(Node currentNode, Node targetNode, Color color){
-    //create a little dot then move it from current Node to the Centre
-    //On Finished, start routPackage
+    //create a little dot then move it from current Node to target Node
     ObservableList<Node> childrenPane = mainPane.getChildren();
     Circle packageCircle = new Circle(0, 0, 2, color);
     childrenPane.add(packageCircle);
     
-    FXMLDocumentController.moving = new TranslateTransition(Duration.millis(500), packageCircle);
+    match3Controller.moving = new TranslateTransition(Duration.millis(500), packageCircle);
     moving.setAutoReverse(true);moving.setCycleCount(1);
     moving.setFromX(currentNode.getLayoutX()  +  20);
     moving.setFromY(currentNode.getLayoutY()  +  20);

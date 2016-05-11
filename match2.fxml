@@ -14,17 +14,17 @@
 <AnchorPane id="AnchorPane" fx:id="mainPane" prefHeight="500.0" prefWidth="650.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eraofbinary.match2Controller">
     <children>
       <ProgressIndicator fx:id="progressIndicator" layoutX="90.0" layoutY="125.0" prefHeight="234.0" prefWidth="471.0" progress="0.0" visible="false" />
-      <Label fx:id="winningPointLabel" alignment="CENTER" disable="true" layoutX="241.0" layoutY="58.0" prefHeight="44.0" prefWidth="172.0" text="winning point" visible="false">
+      <Label fx:id="winningPointLabel" alignment="CENTER" disable="true" layoutX="231.0" layoutY="58.0" prefHeight="44.0" prefWidth="192.0" text="winning point" visible="false">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <Label fx:id="player1PointLabel" alignment="CENTER" layoutX="134.0" layoutY="193.0" prefHeight="44.0" prefWidth="42.0" text="0" textFill="#3e3eda">
+      <Label fx:id="player1PointLabel" alignment="CENTER" layoutX="115.0" layoutY="193.0" prefHeight="44.0" prefWidth="80.0" text="0" textFill="#3e3eda">
          <font>
             <Font name="System Bold" size="44.0" />
          </font>
       </Label>
-      <Label fx:id="player1ReceivedLabel" alignment="CENTER" layoutX="55.0" layoutY="125.0" prefHeight="30.0" prefWidth="200.0" text="received key" textFill="#059700">
+      <Label fx:id="player1ReceivedLabel" alignment="CENTER" layoutX="30.0" layoutY="125.0" prefHeight="30.0" prefWidth="250.0" text="received key" textFill="#059700">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
@@ -38,12 +38,12 @@
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Label fx:id="player2PointLabel" alignment="CENTER" layoutX="478.0" layoutY="193.0" prefHeight="44.0" prefWidth="42.0" text="0" textFill="#e1e10b">
+      <Label fx:id="player2PointLabel" alignment="CENTER" layoutX="461.0" layoutY="193.0" prefHeight="44.0" prefWidth="80.0" text="0" textFill="#e1e10b">
          <font>
             <Font name="System Bold" size="44.0" />
          </font>
       </Label>
-      <Label fx:id="player2ReceivedLabel" alignment="CENTER" layoutX="399.0" layoutY="125.0" prefHeight="30.0" prefWidth="200.0" text="received key" textFill="#059700">
+      <Label fx:id="player2ReceivedLabel" alignment="CENTER" layoutX="375.0" layoutY="125.0" prefHeight="30.0" prefWidth="250.0" text="received key" textFill="#059700">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
@@ -64,16 +64,16 @@
       </Label>
       <AnchorPane fx:id="instructionPane" layoutX="62.0" layoutY="80.0" prefHeight="310.0" prefWidth="526.0" style="-fx-background-color: white;">
          <children>
-            <TextField fx:id="winningPointField" alignment="CENTER" layoutX="185.0" prefHeight="44.0" prefWidth="156.0" promptText="Winning point">
-               <font>
-                  <Font name="System Bold" size="20.0" />
-               </font>
-            </TextField>
             <Button fx:id="startButton" layoutX="196.0" layoutY="94.0" onAction="#onStartButton" prefHeight="110.0" prefWidth="134.0" style="-fx-background-radius: 50, 50, 50, 50;" text="Start">
                <font>
                   <Font name="System Bold" size="36.0" />
                </font>
             </Button>
+            <TextField fx:id="winningPointField" alignment="CENTER" layoutX="185.0" prefHeight="44.0" prefWidth="156.0" promptText="Winning point">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </TextField>
             <TextField fx:id="player1NameField" alignment="CENTER" layoutY="212.0" prefHeight="25.0" prefWidth="172.0" promptText="Player's name" />
             <TextField fx:id="player2NameField" alignment="CENTER" layoutX="354.0" layoutY="212.0" prefHeight="25.0" prefWidth="172.0" promptText="Player's name" />
             <Button layoutY="245.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Z" />

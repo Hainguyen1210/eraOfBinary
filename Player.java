@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package eraofbinary;
 
 import java.util.ArrayList;
@@ -14,8 +9,12 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.control.Label;
 
 /**
- *
- * @author haing
+ * Functions of the class:
+  * create players
+  * handle with both 2P and 3P modes 
+  * hold the players in an array
+  * bind player's info with TextProperties
+  * update Player's properties: dataSent, dataReceived, Points, routeData
  */
 public class Player {
   public static ArrayList<Player> players = new ArrayList<>();
@@ -126,7 +125,14 @@ public class Player {
         sentData = new String[] {players.get(0).key, players.get(1).key};
       }
       
-      System.out.println(Arrays.toString(sentData));
+      //print out array
+      System.out.println("  Player's keys: ");
+      int count = 1;
+      for(String key: sentData) {
+        System.out.println("  " + count + " \\ " + key);
+        count++;
+      }
+      
       for(Player checkingPlayer : players) {
         int index = players.indexOf(checkingPlayer);
         try {
@@ -137,15 +143,17 @@ public class Player {
         bitsAvailable += checkingPlayer.received.length();
       }
       if(bitsAvailable > 0) { Sound.power.play(); }
-      
+      System.out.println("Routing finished");
     } catch (Exception e) {
-      System.err.println("route failed");
+      System.err.println("Routing failed");
     }
   }
   public static void countPoint(){
+    //Count point
     Player previousPlayer;
     int index = 0;
     for(Player checkingPlayer : players) {
+      //get previous Player
       try{        previousPlayer = players.get(index-1);      }
       catch (ArrayIndexOutOfBoundsException e) {
         previousPlayer = players.get(players.size()-1);
@@ -163,6 +171,14 @@ public class Player {
       }
       
     }
+    //Print out Player's points
+    System.out.println("  Player's points:");
+    int count = 1;
+    for(Player checkingPlayer : players) {
+      System.out.println("  " + count + "  // " + checkingPlayer.currentPoint);
+      count++;
+    }
+    System.out.println("Count finished");
   }
   public static void updateUI(){
     for(Player checkingPlayer : players) {
@@ -185,14 +201,57 @@ public class Player {
   }
   public static boolean hasWinner(){
     int winningPoint = 5;
+    ArrayList<Player> highestPointPlayers = new ArrayList<>();
     if (is3Players) { winningPoint = match3Controller.winningPoint;  }
     else{ winningPoint = match2Controller.winningPoint;  }
     
+    //filter Players who have reach the winning point
     for (Player checkingPlayer : players) {
-      if(checkingPlayer.currentPoint == winningPoint) {
-        return true;
+      if(checkingPlayer.currentPoint >= winningPoint) {
+        highestPointPlayers.add(checkingPlayer);
       }
     }
-    return false;
+    int point1, point2, point3;
+    switch(highestPointPlayers.size()){
+      case 0: //There is no one reaches the winningPoint
+        return false;
+      case 1: //There is one Player reaches the winningPoint -> Winner
+        updateWinnerUI("Winner", highestPointPlayers.get(0));
+        return true;
+      case 2: //There is Two Players reach the winningPoint
+              // Compare Who has higher point
+        point1 = highestPointPlayers.get(0).currentPoint;
+        point2 = highestPointPlayers.get(1).currentPoint;
+        if(point1 == point2) {
+          updateWinnerUI("Draw", highestPointPlayers.get(0));
+          updateWinnerUI("Draw", highestPointPlayers.get(1));
+          return true;
+        } else if (point1 > point2){
+          updateWinnerUI("Winner", highestPointPlayers.get(0));
+          return true;
+        } else {
+          updateWinnerUI("Winner", highestPointPlayers.get(1));
+          return true;
+        }
+      case 3: //when there is 3 player reach the winningPoint
+              //they will have the same point -> game is draw
+        for(Player checkingPlayer : highestPointPlayers) {
+          updateWinnerUI("Draw", checkingPlayer);
+        }
+        return true;
+    }
+    for(Player checkingPlayer : players) {
+      updateWinnerUI("Bug", checkingPlayer);
+    }
+    return true;
+  }
+  private static void updateWinnerUI(String winOrDrawString, Player winner){
+  //update winner name to th UI
+    Platform.runLater(new Runnable() {
+    @Override public void run() {
+      winner.receivedProperty.set(winOrDrawString);
+      winner.keyProperty.set(winner.name);
+    }
+    });
   }
 }

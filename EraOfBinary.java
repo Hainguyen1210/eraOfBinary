@@ -1,5 +1,8 @@
 /**
  * Title: Era of Binary
+ * Author: Hai Nguyen
+ * Version: v2
+ * Last updated: May 2, 2016
  * Description:
  *  This is a simple game which was inspired by Binary and Internet
  *  The game currently is designed to be played by 2 or 3 people in the same keyboard
@@ -15,10 +18,12 @@
  *    + if the package was typed incorrectly, one point will be sent to that 
  *      package owner.
  *  Game will repeat these two phases consecutively until 
- *  someone's point reaches the Winning point, which is chosen at the game starts
+ *  someone's point reaches the Winning point, which was chosen at the game starts
  * 
- * Author: Hai Nguyen
- * Version: v2
+ * Shortcut keys:
+ *  - SPACE to start the game
+ *  - ESC   to reset the game after finished
+ * 
  * Current functions:
  *  # 2 phases of Timer: Sending phase and Decoding phase
  *  # timer-binded progress Indicator (change speed and color)
@@ -31,6 +36,7 @@
  */
 package eraofbinary;
 
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -38,8 +44,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- *
- * @author haing
+ * creates the information text file(including the instruction)
+ * plays background sound
+ * navigate to the Choose mode page
  */
 public class EraOfBinary extends Application {
   
@@ -55,11 +62,14 @@ public class EraOfBinary extends Application {
   @Override
   public void stop(){
     System.err.println("window is closing");
+    System.exit(0);
   }
   /**
    * @param args the command line arguments
+   * @throws java.io.IOException
    */
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
+    Statistics.information();
     launch(args);
   }
   

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package eraofbinary;
 
 import java.io.IOException;
@@ -33,8 +28,13 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
- *
- * @author haing
+ * Controller of 3P mode
+ * Set the game:
+ *  - Winning point
+ *  - Player names
+ * start Counter task
+ * get Player's inputs
+ * Animation
  */
 public class match3Controller implements Initializable {
   public static TranslateTransition moving; //for animation
@@ -60,9 +60,10 @@ public class match3Controller implements Initializable {
   
   @Override  public void initialize(URL url, ResourceBundle rb) {
     isSendingPhase = true;
+    isThreadRunning = false;  
+    isGameStarted = false;
     indicatorColor = new SimpleStringProperty("-fx-progress-color: red;");
     colorIndex = 0;
-    isThreadRunning = false;  isGameStarted = false;
     Sound.playBackgoundSound();
     a = player1KeyLabel; sent1 = player1ReceivedLabel; point1 = player1PointLabel;
     b = player2KeyLabel; sent2 = player2ReceivedLabel; point2 = player2PointLabel;
@@ -94,12 +95,12 @@ public class match3Controller implements Initializable {
     });
   }
   private void resetGame() throws IOException{
+    Player.players.clear();
     if(isThreadRunning) {
     counter.cancel(false);
     currentThread.stop();
     counter = null;
     currentThread = null;
-    Player.players.clear();
     }
     
     Parent root = FXMLLoader.load(getClass().getResource("match3.fxml"));
@@ -166,7 +167,7 @@ public class match3Controller implements Initializable {
     try {
       int checkingPoint;
       checkingPoint = Integer.parseInt(winningPointField.getText());
-      if(checkingPoint <= 10) {
+      if(checkingPoint <= 99) {
         winningPoint = checkingPoint;
       }
     } catch (NumberFormatException e) {
@@ -230,7 +231,7 @@ public class match3Controller implements Initializable {
         }
       }
       //Player's inputs as 0 and 1
-      if(isGameStarted ) {
+      if(isGameStarted && !Player.hasWinner() ) {
         for(Player checkingPlayer : Player.players) {
           if (      keyInput.getCode() == checkingPlayer.key1) {
             Sound.typeWriter.play();
@@ -269,7 +270,7 @@ public class match3Controller implements Initializable {
   private void createDots(Node currentNode, Node targetNode, Color color){
     //create a little dot then move it from current Node to target Node
     ObservableList<Node> childrenPane = mainPane.getChildren();
-    Circle packageCircle = new Circle(0, 0, 2, color);
+    Circle packageCircle = new Circle(0, 0, 4, color);
     childrenPane.add(packageCircle);
     
     match3Controller.moving = new TranslateTransition(Duration.millis(500), packageCircle);

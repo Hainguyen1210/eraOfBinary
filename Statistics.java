@@ -44,6 +44,7 @@ class dateProvider{
 }
 public class Statistics {
   static int highestWinningPoint = 0, highestBitsUsed = 0 , highestBitsSent = 0;
+  static final File README_FILE = new File("Readme.txt");
   static final File LOG_FILE = new File("log.txt");
   static final File statistic = new File("statistic.txt");
   public static void loadUserData() throws FileNotFoundException{
@@ -116,12 +117,42 @@ public class Statistics {
       FileWriter statisticUpdater = new FileWriter(statistic, false);
       statisticUpdater.write("Last updated: " + dateProvider.get() + System.lineSeparator());
       statisticUpdater.write("Highest winning point: " + highestWinningPoint + System.lineSeparator());
-      statisticUpdater.write("Highest bist used:     " + highestBitsUsed + System.lineSeparator());
-      statisticUpdater.write("Highest bist sent:     " + highestBitsSent + System.lineSeparator());
+      statisticUpdater.write("Highest bits used:     " + highestBitsUsed + System.lineSeparator());
+      statisticUpdater.write("Highest bits sent:     " + highestBitsSent + System.lineSeparator());
       statisticUpdater.close();
     } catch (IOException ex) {
       System.err.println("Can't write to file statistic.txt");
       Logger.getLogger(Statistics.class.getName()).log(Level.SEVERE, null, ex);
+    }
+  }
+  public static void information() throws IOException{
+    try ( //create information text file of the application
+            FileWriter informationWriter = new FileWriter(README_FILE, false)) {
+      informationWriter.write(
+      " * Title: Era of Binary \n" + System.lineSeparator() +
+      " * Author: Hai Nguyen \n" + System.lineSeparator() +
+      " * Version: v2\n" + System.lineSeparator() +
+      " * Last updated: May 2, 2016\n" + System.lineSeparator() +
+      " * Description:\n" + System.lineSeparator() +
+      " *  This is a simple game which was inspired by Binary and Internet\n" + System.lineSeparator() +
+      " *  The game currently is designed to be played by 2 or 3 people in the same keyboard\n" + System.lineSeparator() +
+      " * \n" + System.lineSeparator() +
+      " * How to Play: \n" + System.lineSeparator() +
+      " *  each Player has 2 keys to represent two bits ( 0 and 1 )\n" + System.lineSeparator() +
+      " *  the game has two phases: Sending and Decoding\n" + System.lineSeparator() +
+      " *  - in Sending phase, each player try to tab his 2 keys to create \n" + System.lineSeparator() + 
+      " *    \"a package of random bits\" which will be sent to other in the end of phase\n" + System.lineSeparator() +
+      " *  - in Sending phase, when players receive their packages, they need to use \n" + System.lineSeparator() +
+      " *    those keys to type exactly the same bits as they received\n" + System.lineSeparator() +
+      " *    + if player types the correct package, he would receive one point\n" + System.lineSeparator() +
+      " *    + if the package was typed incorrectly, one point will be sent to that \n" + System.lineSeparator() +
+      " *      package owner.\n" + System.lineSeparator() +
+      " *  Game will repeat these two phases consecutively until \n" + System.lineSeparator() +
+      " *  someone's point reaches the Winning point, which was chosen at the game starts\n" + System.lineSeparator() +
+      " * \n" + System.lineSeparator() +
+      " * Shortcut keys:\n" + System.lineSeparator() +
+      " *  - SPACE to start the game\n" + System.lineSeparator() +
+      " *  - ESC   to reset the game after finished");
     }
   }
 }

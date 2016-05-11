@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package eraofbinary;
 
 import javafx.concurrent.Task;
@@ -10,11 +5,11 @@ import javafx.concurrent.Task;
 /**
  * this class is extended from Task,
  * purpose: create an upđatable timer to binded with ProgressIndicator
- *          timer can swap between 2 specific periods of time 
- * @author haing
+ *          timer can swap between 2 specific periods of time
+ * read function call() for more information
  */
 public class timerTask extends Task<Void> {
-  private int currentSeconds, second1, second2, chosenSecond = 1;
+  private int rounds = 0, currentSeconds, second1, second2, chosenSecond = 1;
   private final boolean is2PhasesMode;
   private boolean isSendingPhase;
   
@@ -48,13 +43,20 @@ public class timerTask extends Task<Void> {
     //swap between SENDING mode and DECODING mode
     this.isSendingPhase = chosenSecond == second1;
     match2Controller.isSendingPhase = this.isSendingPhase;
-    match2Controller.isSendingPhase = this.isSendingPhase;
+    match3Controller.isSendingPhase = this.isSendingPhase;
     
   }
   
-  @Override
-  protected Void call()throws Exception{
-    System.out.println("Task Started");
+  @Override  protected Void call()throws Exception{
+    /** create Phase counter 
+     * sending   phase counter: second1 (currently set to 1 second)
+     * receiving phase counter: second2 (currently set to 3 seconds)
+     * Counter will switch between 2 phases by turn
+     * at the end of sending phase, data will be routed like ring topology
+     * at the end of decoding phase, counter checks if data is decoded and count point
+     * the cycle ends when the game has the winner, whose point reaches the winning point
+     */
+    
     
     if(is2PhasesMode){
     //swap between 2 periods of time so timer counts different each turn
@@ -63,6 +65,9 @@ public class timerTask extends Task<Void> {
       swapMode();
     }
     
+    if(this.isSendingPhase) {this.rounds++;}
+      System.out.print("Round " + this.rounds + " - ");
+    
     currentSeconds = chosenSecond;
     
     long startTime = System.currentTimeMillis();
@@ -70,7 +75,12 @@ public class timerTask extends Task<Void> {
     long runningTime = startTime, totalTime = endTime - startTime;
     long temp = startTime + 1000;
     
-    System.out.println("isSendingPhase? " + this.isSendingPhase);
+    if(this.isSendingPhase) {
+      System.out.println("Sending phase");
+    } else {
+      System.out.println("Decoding phase");
+    }
+    System.out.print("remaining seconds: ");
     System.out.print(currentSeconds + " ");
     
     //count each second
@@ -83,34 +93,33 @@ public class timerTask extends Task<Void> {
       updateProgress(runningTime-startTime, totalTime);
       runningTime = System.currentTimeMillis();
     }
-    System.out.print("end while loop ");
     
     //rout packages and count points
       if(this.isSendingPhase) {
+    System.out.println("\nRouting");
       Player.routeData();
       Player.clearPlayerKeys();
     } else{
+    System.out.println("\nCounting point");
       Player.countPoint();
       Player.clearPlayerReceived();
       Player.clearPlayerKeys();
     }
       
-    System.out.println("changing color");
+    //Change Progress Indicator's color
     if(Player.is3Players) { match3Controller.swapIndicatorColor(); }
     else { match2Controller.swapIndicatorColor(); }
-    System.out.println("color changed");
     
     Player.updateUI();
     
     //repeat the counter
     if (runningTime>=endTime) {
-      System.out.println("run again");
-      System.out.println("---------------------------------");
+      System.out.println("-----run again-----------------");
       
       if(!Player.hasWinner()) {
         call();      
       } else {
-        Sound.thuglife.play();
+        Sound.winning.play();
         System.out.println("loading");
         Statistics.loadUserData();
         System.out.println("finished");
@@ -119,17 +128,18 @@ public class timerTask extends Task<Void> {
         System.out.print("saving");
         Statistics.saveUserData();
         System.out.println(" finished");
-        
+        while(Sound.winning.isPlaying()){
+         Thread.sleep(200);
+         Player.hasWinner();
+        }
       }
     }
     return null;
   }
-  @Override
-  protected void failed(){
+  @Override  protected void failed(){
     System.out.println("Task failed");
   }
-  @Override
-  protected void succeeded(){
+  @Override  protected void succeeded(){
     System.out.println("Task finished");
   }
 }

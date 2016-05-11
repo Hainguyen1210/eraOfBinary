@@ -17,8 +17,7 @@ import javafx.stage.Stage;
 
 /**
  * FXML Controller class
- *
- * @author haing
+ * choose between 2 modes: 2P and 3P
  */
 public class ChooseModeController implements Initializable {
   @FXML Label eraOfBinary;

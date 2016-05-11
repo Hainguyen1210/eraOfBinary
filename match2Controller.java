@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package eraofbinary;
 
 import java.io.IOException;
@@ -33,8 +28,13 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
- *
- * @author haing
+ * Controller of 2P mode
+ * Set the game:
+ *  - Winning point
+ *  - Player names
+ * start Counter task
+ * get Player's inputs
+ * Animation
  */
 public class match2Controller implements Initializable {
   public static TranslateTransition moving; //for animation
@@ -60,9 +60,10 @@ public class match2Controller implements Initializable {
   
   @Override  public void initialize(URL url, ResourceBundle rb) {
     isSendingPhase = true;
+    isThreadRunning = false;  
+    isGameStarted = false;
     indicatorColor = new SimpleStringProperty("-fx-progress-color: red;");
     colorIndex = 0;
-    isThreadRunning = false;  isGameStarted = false;
     Sound.playBackgoundSound();
     a = player1KeyLabel; sent1 = player1ReceivedLabel; point1 = player1PointLabel;
     b = player2KeyLabel; sent2 = player2ReceivedLabel; point2 = player2PointLabel;
@@ -93,12 +94,12 @@ public class match2Controller implements Initializable {
     });
   }
   private void resetGame() throws IOException{
+    Player.players.clear();
     if(isThreadRunning) {
     counter.cancel(false);
     currentThread.stop();
     counter = null;
     currentThread = null;
-    Player.players.clear();
     }
     
     Parent root = FXMLLoader.load(getClass().getResource("match2.fxml"));
@@ -151,9 +152,7 @@ public class match2Controller implements Initializable {
     }
     //Hide the Instruction Panne
     instructionPane.setVisible(false);
-  //    backButton.setVisible(true);
     progressIndicator.setVisible(true);
-    
       System.out.println(" checking-----------------FINISHED");
     } catch (Exception e) {
       System.out.println(" checking-----------------FAILED");
@@ -164,7 +163,7 @@ public class match2Controller implements Initializable {
     try {
       int checkingPoint;
       checkingPoint = Integer.parseInt(winningPointField.getText());
-      if(checkingPoint <= 10) {
+      if(checkingPoint <= 99) {
         winningPoint = checkingPoint;
       }
     } catch (NumberFormatException e) {
@@ -228,7 +227,7 @@ public class match2Controller implements Initializable {
         }
       }
       //Player's inputs as 0 and 1
-      if(isGameStarted ) {
+      if(isGameStarted && !Player.hasWinner() ) {
         for(Player checkingPlayer : Player.players) {
           if (      keyInput.getCode() == checkingPlayer.key1) {
             Sound.typeWriter.play();
@@ -266,7 +265,7 @@ public class match2Controller implements Initializable {
   private void createDots(Node currentNode, Node targetNode, Color color){
     //create a little dot then move it from current Node to target Node
     ObservableList<Node> childrenPane = mainPane.getChildren();
-    Circle packageCircle = new Circle(0, 0, 2, color);
+    Circle packageCircle = new Circle(0, 0, 4, color);
     childrenPane.add(packageCircle);
     
     int pointPosition = 20;
@@ -276,9 +275,9 @@ public class match2Controller implements Initializable {
     
     match2Controller.moving = new TranslateTransition(Duration.millis(500), packageCircle);
     moving.setAutoReverse(true);moving.setCycleCount(1);
-    moving.setFromX(currentNode.getLayoutX()  +  20);
+    moving.setFromX(currentNode.getLayoutX()  +  43);
     moving.setFromY(currentNode.getLayoutY()  +  pointPosition);
-    moving.setToX(  targetNode.getLayoutX()   +  20);
+    moving.setToX(  targetNode.getLayoutX()   +  43);
     moving.setToY(  targetNode.getLayoutY()   +  pointPosition);    
     moving.play(); 
     

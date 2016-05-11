@@ -119,18 +119,35 @@ public class timerTask extends Task<Void> {
       if(!Player.hasWinner()) {
         call();      
       } else {
-        Sound.winning.play();
-        System.out.println("loading");
+        Sound.playRandomWinning();
+        //load data
+        System.out.println("---loading");
         Statistics.loadUserData();
-        System.out.println("finished");
+        System.out.println("---loading finished");
         Statistics.compareStatistic();
         
+        //print out won Players list
+        System.out.print("Won Players: ");
+        for(WonPlayer checkingPlayer : WonPlayer.getList()) {
+        System.out.print(checkingPlayer.name + ", ");
+        }
+        System.out.println();
+        
+        //save data
         System.out.print("saving");
         Statistics.saveUserData();
         System.out.println(" finished");
         while(Sound.winning.isPlaying()){
          Thread.sleep(200);
          Player.hasWinner();
+        }
+        
+        //clear list after saving
+        try {
+          WonPlayer.clear();
+          System.out.println("Won players list has been cleared.");
+        } catch (ArrayStoreException e) {
+          System.err.println("Won players list can not be cleared.");
         }
       }
     }

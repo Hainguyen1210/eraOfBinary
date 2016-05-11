@@ -24,7 +24,7 @@
  *  - SPACE to start the game
  *  - ESC   to reset the game after finished
  * 
- * Current functions:
+ * Current most outstanding functions:
  *  # 2 phases of Timer: Sending phase and Decoding phase
  *  # timer-binded progress Indicator (change speed and color)
  *  # 2 play modes: 2P or 3P

@@ -79,6 +79,7 @@ public class match2Controller implements Initializable {
   }
   
   public static void swapIndicatorColor(){
+    //swap the colors of progress indicator
     if(colorIndex == 0 ) {  colorIndex = 1;    }
     else {  colorIndex = 0; }
     
@@ -94,6 +95,7 @@ public class match2Controller implements Initializable {
     });
   }
   private void resetGame() throws IOException{
+    //reset the game's tepmporary data and reload the fxml file
     Player.players.clear();
     if(isThreadRunning) {
     counter.cancel(false);

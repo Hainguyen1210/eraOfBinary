@@ -216,6 +216,8 @@ public class Player {
       case 0: //There is no one reaches the winningPoint
         return false;
       case 1: //There is one Player reaches the winningPoint -> Winner
+        //add to winners list
+        WonPlayer.addToList(new WonPlayer(highestPointPlayers.get(0).name));
         updateWinnerUI("Winner", highestPointPlayers.get(0));
         return true;
       case 2: //There is Two Players reach the winningPoint
@@ -227,9 +229,13 @@ public class Player {
           updateWinnerUI("Draw", highestPointPlayers.get(1));
           return true;
         } else if (point1 > point2){
+        //add to winners list
+        WonPlayer.addToList(new WonPlayer(highestPointPlayers.get(0).name));
           updateWinnerUI("Winner", highestPointPlayers.get(0));
           return true;
         } else {
+        //add to winners list
+        WonPlayer.addToList(new WonPlayer(highestPointPlayers.get(1).name));
           updateWinnerUI("Winner", highestPointPlayers.get(1));
           return true;
         }
